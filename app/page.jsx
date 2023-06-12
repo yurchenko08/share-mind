@@ -1,3 +1,4 @@
+import Feed from '@components/Feed';
 const Home = () => {
   return (
     <section className='w-full flex-center flex-col'>
@@ -13,6 +14,7 @@ const Home = () => {
         particular topic or simply want to share your experiences, Share Minds
         provides a space for open dialogue and exchange of ideas.
       </p>
+      <Feed />
     </section>
   );
 };
