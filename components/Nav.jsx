@@ -27,7 +27,7 @@ function Nav() {
           height={30}
           className='object-contain'
         />
-        <p className='logo_text'>Promptopia</p>
+        <p className='logo_text'>MindShare</p>
       </Link>
 
       {/* Desktop Navigation */}
@@ -74,7 +74,7 @@ function Nav() {
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
         {isLogged ? (
-          <div className='flex'>
+          <div className='flex hover:cursor-pointer'>
             <Image
               src='/assets/images/logo.svg'
               width={37}
