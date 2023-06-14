@@ -7,7 +7,7 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 function Nav() {
   const [toggleDropDown, setToggleDropDown] = useState(false);
   const [providers, setProviders] = useState(null);
-  const isLogged = true;
+  const { data: session } = useSession;
   useEffect(() => {
     const fetchProviders = async () => {
       const response = await getProviders();
@@ -32,7 +32,7 @@ function Nav() {
 
       {/* Desktop Navigation */}
       <div className='sm:flex hidden'>
-        {isLogged ? (
+        {session?.user ? (
           <div className='flex gap-3 md:gap-5'>
             <Link href='/create-mind' className='black_btn'>
               Create Mind
@@ -73,7 +73,7 @@ function Nav() {
 
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
-        {isLogged ? (
+        {session?.user ? (
           <div className='flex hover:cursor-pointer'>
             <Image
               src='/assets/images/logo.svg'
