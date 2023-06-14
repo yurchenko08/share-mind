@@ -7,8 +7,8 @@ export const connectToDb = async () => {
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGODB.URI, {
-      dbName: 'shareMinds',
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'shareMind',
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
