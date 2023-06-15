@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Form from '@components/Form';
 const CreateMind = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({ propmt: '', tag: '' });
   const createMind = async (e) => {
@@ -32,6 +34,7 @@ const CreateMind = () => {
       type='Create'
       post={post}
       setPost={setPost}
+      submitting={submitting}
       handleSubmit={createMind}
     />
   );
