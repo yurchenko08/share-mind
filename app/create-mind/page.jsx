@@ -7,7 +7,7 @@ const CreateMind = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
-  const [post, setPost] = useState({ propmt: '', tag: '' });
+  const [post, setPost] = useState({ mind: '', tag: '' });
   const createMind = async (e) => {
     e.preventDefault();
     setSubmitting(true);

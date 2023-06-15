@@ -1,4 +1,5 @@
-import mongoose, { Schema, model, models } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
+
 const MindSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
@@ -6,9 +7,12 @@ const MindSchema = new Schema({
   },
   mind: {
     type: String,
-    required: [true, 'Mind is required'],
+    required: [true, 'Mind is required.'],
   },
-  tag: { type: String, required: [true, 'Tag is required'] },
+  tag: {
+    type: String,
+    required: [true, 'Tag is required.'],
+  },
 });
 const Mind = models.Mind || model('Mind', MindSchema);
 export default Mind;
