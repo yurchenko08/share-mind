@@ -1,7 +1,7 @@
 import { connectToDb } from '@utils/database';
 import Mind from '@models/mind';
 export const POST = async (req) => {
-  const { userId, mind, tag } = await req.json;
+  const { userId, mind, tag } = await req.json();
   try {
     await connectToDb();
     const newMind = new Mind({
