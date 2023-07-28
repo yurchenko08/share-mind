@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-const [searchText, setSearchText] = useState('');
-const [posts, setPosts] = useState([]);
+import MindCard from './MindCard';
+
 const handleSearch = (e) => {};
 const MindCardList = ({ data, handleTagClick }) => {
   return (
@@ -13,6 +13,8 @@ const MindCardList = ({ data, handleTagClick }) => {
   );
 };
 function Feed() {
+  const [searchText, setSearchText] = useState('');
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
     const fetchMinds = async () => {
       const response = await fetch('/api/mind');
