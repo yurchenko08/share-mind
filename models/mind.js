@@ -14,5 +14,5 @@ const MindSchema = new Schema({
     required: [true, 'Tag is required.'],
   },
 });
-const Mind = models.Mind || model('Mind', MindSchema);
+const Mind = models?.Mind || model('Mind', MindSchema);
 export default Mind;
