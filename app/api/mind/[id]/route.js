@@ -32,3 +32,12 @@ export const PATCH = async (req, { params }) => {
 };
 
 //DELETE
+export const DELETE = async (req, { params }) => {
+  try {
+    await connectToDb();
+    await Mind.findByIdAndRemove(params.id);
+    return new Response('Mind deleted successfully', { status: 200 });
+  } catch (error) {
+    return new Response('failed to delete', { status: 500 });
+  }
+};
