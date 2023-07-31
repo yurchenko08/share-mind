@@ -1,30 +1,66 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import Profile from '@components/Profile';
-const MyProfile = () => {
-  const { data: session } = useSession();
-  const [posts, setPosts] = useState([]);
+
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import Form from '@components/Form';
+
+const UpdateMind = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const mindId = searchParams.get('id');
+
+  const [post, setPost] = useState({ mind: '', tag: '' });
+  const [submitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${session?.user.id}/posts`);
+    const getMindDetails = async () => {
+      const response = await fetch(`/api/prompt/${mindId}`);
       const data = await response.json();
-      setPosts(data);
+
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag,
+      });
     };
-    session?.user.id && fetchPosts();
-  }, []);
-  const handleEdit = () => {};
-  const handleDelete = async () => {};
+
+    if (mindId) getMindDetails();
+  }, [mindId]);
+
+  const updateMind = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!MindId) return alert('Missing MindId!');
+
+    try {
+      const response = await fetch(`/api/mind/${mindId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          mind: post.mind,
+          tag: post.tag,
+        }),
+      });
+
+      if (response.ok) {
+        router.push('/');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <Profile
-      name='My profile'
-      desc='welcome to my profile'
-      data={posts}
-      handleEdit={handleEdit}
-      handleDelete={handleDelete}
+    <Form
+      type='Edit'
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={updateMind}
     />
   );
 };
 
-export default MyProfile;
+export default UpdateMind;
