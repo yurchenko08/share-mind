@@ -20,6 +20,9 @@ function Feed() {
     const searchText = e.target.value;
     setSearchText(searchText); // Update the searchText state with the input value
   };
+  const handleTagClick = (tag) => {
+    setSearchText(tag);
+  };
 
   useEffect(() => {
     const fetchMinds = async () => {
@@ -52,7 +55,7 @@ function Feed() {
           className='search_input peer'
         />
       </form>
-      <MindCardList data={filteredPosts} handleTagClick={() => {}} />
+      <MindCardList data={filteredPosts} handleTagClick={handleTagClick} />
     </section>
   );
 }
