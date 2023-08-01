@@ -1,66 +1,61 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import Form from '@components/Form';
+import Profile from '@components/Profile';
 
-const UpdateMind = () => {
+const MyProfile = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const mindId = searchParams.get('id');
+  const { data: session } = useSession();
 
-  const [post, setPost] = useState({ mind: '', tag: '' });
-  const [submitting, setIsSubmitting] = useState(false);
+  const [myPosts, setMyPosts] = useState([]);
 
   useEffect(() => {
-    const getMindDetails = async () => {
-      const response = await fetch(`/api/prompt/${mindId}`);
+    const fetchPosts = async () => {
+      const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
 
-      setPost({
-        prompt: data.prompt,
-        tag: data.tag,
-      });
+      setMyPosts(data);
     };
 
-    if (mindId) getMindDetails();
-  }, [mindId]);
+    if (session?.user.id) fetchPosts();
+  }, [session?.user.id]);
 
-  const updateMind = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleEdit = (post) => {
+    router.push(`/update-mind?id=${post._id}`);
+  };
 
-    if (!MindId) return alert('Missing MindId!');
+  const handleDelete = async (post) => {
+    const hasConfirmed = confirm(
+      'Are you sure you want to delete this prompt?'
+    );
 
-    try {
-      const response = await fetch(`/api/mind/${mindId}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          mind: post.mind,
-          tag: post.tag,
-        }),
-      });
+    if (hasConfirmed) {
+      try {
+        await fetch(`/api/mind/${post._id.toString()}`, {
+          method: 'DELETE',
+        });
 
-      if (response.ok) {
-        router.push('/');
+        const filteredPosts = myPosts.filter((item) => item._id !== post._id);
+
+        setMyPosts(filteredPosts);
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
-    <Form
-      type='Edit'
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={updateMind}
+    <Profile
+      name='My'
+      desc='Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination'
+      data={myPosts}
+      handleEdit={handleEdit}
+      handleDelete={handleDelete}
     />
   );
 };
 
-export default UpdateMind;
+export default MyProfile;
